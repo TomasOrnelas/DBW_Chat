@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <%- include('./partials/head') %>
+    <meta charset="UTF-8">
+    <title>Mudar nome de chat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
+          rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined"
+          rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Round"
+          rel="stylesheet">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Sharp"
+          rel="stylesheet">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Two+Tone"
+          rel="stylesheet">
+
+</head>
+<body class="pag">
+<div class="page">
+    <div class="topbar">
+    </div>
+    <div class="userbar">
+        <div class="left">
+            <form id="index" method="get" action="http://localhost:3000/"><button><i class="material-icons">home</i></button></form>
+            <div class="profpic" id="imagem"></div>
+            <div class="name"><span id="username"></span></div>
+            <form id="editar" method="get" action="/editar"><button><i class="material-icons">mode</i></button></form>
+        </div>
+        <div class="right">
+            <form id="logout" method="post" action="/logout"><button value="Log out" type="submit"><i class="material-icons">logout</i></button></form>
+
+        </div>
+    </div>
+
+    <div class="formcontainer">
+
+        <form class="form2" action="/chatName" method="post" id="form">
+            <div class="formlogin">Escolha o chat</div>
+            <input type="text" name="username" id="usernameID" hidden>
+            <input type="hidden" name="chat" id="groupID">
+            <div class="formpart2" id="escolherChat"></div>
+            <input type="text" name="novoNome">
+            <div class="formpart" id="mudar"></div>
+        </form>
+    </div>
+</div>
+<script>
+    function AcederChat(chats){
+        if(chats.length!==0){
+            for(var i=0;i<chats.length;i++){
+                var chatPendente = document.createElement("p");
+                chatPendente.setAttribute("id",i);
+                chatPendente.innerText = chats[i].nome;
+                document.getElementById("escolherChat").appendChild(chatPendente);
+                var chatPendente = document.createElement("input");
+                chatPendente.setAttribute("name","antigo");
+                chatPendente.setAttribute("value",chats[i].nome);
+                chatPendente.setAttribute("type","radio");
+                document.getElementById(i).appendChild(chatPendente);
+            }
+            var chatPendente = document.createElement("input");
+            chatPendente.setAttribute("name","resposta");
+            chatPendente.setAttribute("value","mudar");
+            chatPendente.setAttribute("type","submit");
+            document.getElementById("mudar").appendChild(chatPendente);
+        }
+        else{
+            var chatPendente = document.createElement("p");
+            chatPendente.innerText = "Não está associado a nenhum chat";
+            document.getElementById("escolherChat").appendChild(chatPendente);
+        }
+    }
+</script>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    const usernameSpan = document.getElementById("username");
+
+    socket.on('connect', () => {
+
+        socket.emit('whoami', (username) => {
+            usernameSpan.innerText = username;
+            document.getElementById("usernameID").setAttribute("value",username);
+        });
+
+        socket.emit('aceder', (chats) => {
+            AcederChat(chats);
+        });
+        socket.emit('looklike', (imagem) => {
+            var img=document.createElement('img');
+            img.setAttribute('src','/uploads/'+imagem[0].imagem);
+            document.getElementById('imagem').appendChild(img);
+        });
+    });
+</script>
+</body>
+</html>

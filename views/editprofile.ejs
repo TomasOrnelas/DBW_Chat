@@ -1,0 +1,100 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Editar perfil</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <%- include('./partials/head') %>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
+          rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined"
+          rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Round"
+          rel="stylesheet">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Sharp"
+          rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Two+Tone"
+          rel="stylesheet">
+</head>
+
+<body class="pag">
+<div class="topbar">
+</div>
+<div class="userbar">
+    <div class="left">
+        <form id="index" method="get" action="http://localhost:3000/"><button><i class="material-icons">home</i></button></form>
+        <form id="aceder" method="get" action="/aceder"><button value="aceder" type="submit" ><i class="material-icons">groups</i></button></form>
+        <form id="logout" method="post" action="/logout"><button value="Log out" type="submit"><i class="material-icons">logout</i></button></form>
+        <div class="aut3"> Edit your profile </div>
+    </div>
+</div>
+<form id="form1" class="formlogin" action="/editar" method="post" enctype="multipart/form-data">
+    <div class="editpag">
+        <div class="editaux">
+            <div class="profpic2" id="imagem" ></div>
+        </div>
+        <div class="overlayimg" id="newimage" >
+
+            <input type="file" name="newImagemPerfil">Change image<i class="material-icons">add_photo_alternate</i></div>
+    </div>
+
+    <div class="formcontainer3">
+        <div class="formlogin">
+            <div class="formpart">
+                <label><i class="material-icons">person</i> Novo Username:</label>
+                <input type="text" name="username" placeholder="Username">
+                <br/>
+            </div>
+            <div class="formpart">
+                <label><i class="material-icons">vpn_key</i> Nova Password:</label>
+                <input type="password" name="newPassword" placeholder="Password">
+            </div>
+
+            <div class="formpart">
+                <button type="submit" value="Submit">Submit</button>
+            </div>
+
+        </div>
+    </div>
+</form>
+<script>
+    const socket = io();
+    const usernameSpan = document.getElementById("username");
+
+    function decodestr() {
+        var uri = window.location.href;
+        var uri_dec = decodeURIComponent(uri);
+        var uri_split= uri_dec.split("x=");
+        return uri_split[1];
+    }
+
+    Element.prototype.remove = function() {
+        this.parentElement.removeChild(this);
+    }
+    NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+        for(var i = this.length - 1; i >= 0; i--) {
+            if(this[i] && this[i].parentElement) {
+                this[i].parentElement.removeChild(this[i]);
+            }
+        }
+    }
+
+
+
+    socket.on('connect', () => {
+
+        socket.emit('looklike', (imagem) => {
+            var img=document.createElement('img');
+            img.setAttribute('src','/uploads/'+imagem[0].imagem);
+            document.getElementById('imagem').appendChild(img);
+        });
+
+    });
+
+
+</script>
+</body>

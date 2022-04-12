@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registo</title>
+    <%- include('./partials/head') %>
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
+          rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined"
+          rel="stylesheet">
+
+</head>
+<body class="pag">
+
+<div class="regbar2">
+    <form id="logout" method="post" action="/logout"><button value="Log out" type="submit">I alredy have an account</button></form>
+
+</div>
+
+<div class="regbar">
+    <div class="reg">
+        Create your account!
+    </div>
+</div>
+<div class="formcontainer3">
+    <form class="formlogin" action="/register" method="post" enctype="multipart/form-data">
+        <div class="formpart">
+            <label><i class="material-icons">person</i> Username:</label>
+            <input type="text" name="username" required placeholder="Username">
+            <br/>
+        </div>
+        <div class="formpart">
+            <label><i class="material-icons">vpn_key</i> Password:</label>
+            <input type="password" name="password" required placeholder="Password">
+        </div>
+        <div class="formpart">
+            <label class="formpart1"><i class="material-icons">upload_file</i> Imagem de Perfil:</label>
+        </div>
+        <div class="formpart"><input type="file" name="imagemPerfil" required></div>
+        <div class="formpart">
+            <button type="submit" value="Submit">Submit</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

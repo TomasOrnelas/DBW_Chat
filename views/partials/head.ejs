@@ -1,0 +1,724 @@
+
+<style>
+
+    /*CSS para o index------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+    .main{
+        font-size: 35px;
+        display: flex;
+        background: #dbdbdb;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+    }
+
+    .top{
+        text-align: center;
+        display: block;
+        background-color: #dbdbdb;
+
+    }
+    .aut{
+        margin-left: 625px;
+    }
+    .aut2{
+        margin-left: 660px;
+    }
+
+    .aut3{
+        margin-left: 740px;
+    }
+
+
+    .top i{
+        background-color: #dbdbdb;
+    }
+
+    .top button{
+        background-color: #dbdbdb;
+    }
+
+    .logout{
+        margin-top: 150px;
+    }
+
+    .form2{
+        background: #dbdbdb;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .form2 a{
+        color: #dbdbdb;
+        padding: 6px 8px 6px 6px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+    }
+
+    .form2 a:hover {
+        color: #2b2b2b;
+        background-color: #8e8e8e;
+        transition: 0.3s;
+    }
+    .formcontainer{
+        display: flex;
+        justify-content: center;
+        border-style: solid;
+        margin-left: 40%;
+        margin-right: 40%;
+        margin-top: 200px;
+    }
+
+</style>
+<style>
+    /*CSS para o login------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    .pag{
+        background-color: #dbdbdb;
+        font-family: "Roboto Light";
+    }
+
+    .regbar {
+        display: flex;
+        flex-direction: column;
+        height: 70px;
+        background: #dbdbdb; /* 2554C7*/
+        color: black;
+        padding: 2px 2px 2px 2px;
+        font-size: 35px;
+        align-items: center;
+    }
+
+    .regbar a{
+        margin-left: 10px;
+        margin-right: calc(100% - 110px);
+        padding: 10px 10px 10px 10px;
+        text-decoration: none;
+        font-size: 25px;
+        color: black;
+        display: block;
+    }
+
+    .regbar a:hover {
+        color: #2b2b2b;
+        background-color: #8e8e8e;
+    }
+</style>
+<style>
+
+    /*CSS para o index------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+    .main{
+        font-size: 35px;
+        display: flex;
+        background: #dbdbdb;
+        width: 100%;
+        height: 100%;
+        justify-content: center;
+    }
+
+    .top{
+        text-align: center;
+        display: block;
+        background-color: #dbdbdb;
+
+    }
+    .aut{
+        margin-left: 625px;
+    }
+    .aut2{
+        margin-left: 660px;
+    }
+    .aut3{
+        margin-left: 750px;
+    }
+
+    .top i{
+        background-color: #dbdbdb;
+    }
+
+    .top button{
+        background-color: #dbdbdb;
+    }
+
+    .logout{
+        margin-top: 150px;
+    }
+
+    .form2{
+        background: #dbdbdb;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .form2 a{
+        color: #dbdbdb;
+        padding: 6px 8px 6px 6px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+    }
+
+    .form2 a:hover {
+        color: #2b2b2b;
+        background-color: #8e8e8e;
+        transition: 0.3s;
+    }
+    .formcontainer{
+        display: flex;
+        justify-content: center;
+        border-style: solid;
+        margin-left: 40%;
+        margin-right: 40%;
+        margin-top: 200px;
+    }
+
+</style>
+<style>
+    /*CSS para o login------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    .pag{
+        background-color: #dbdbdb;
+        font-family: "Roboto Light";
+    }
+
+    .regbar {
+        display: flex;
+        flex-direction: column;
+        height: 70px;
+        background: #dbdbdb; /* 2554C7*/
+        color: black;
+        padding: 2px 2px 2px 2px;
+        font-size: 35px;
+        align-items: center;
+    }
+
+    .regbar a{
+        margin-left: 10px;
+        margin-right: calc(100% - 110px);
+        padding: 10px 10px 10px 10px;
+        text-decoration: none;
+        font-size: 25px;
+        color: black;
+        display: block;
+    }
+
+    .regbar a:hover {
+        color: #2b2b2b;
+        background-color: #8e8e8e;
+        transition: 0.3s;
+    }
+
+    .regbar2 button{
+        margin-left: 10px;
+        margin-right: calc(100% - 275px);
+        padding: 10px 10px 10px 10px;
+        text-decoration: none;
+        font-size: 20px;
+        color: black;
+        border-style: hidden;
+        background-color: #dbdbdb;
+    }
+    .regbar2 button:hover {
+        color: #2b2b2b;
+        background-color: #8e8e8e;
+        transition: 0.3s;
+    }
+
+
+    .reg{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+
+    .formlogin{
+        background: #dbdbdb;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        font-size: 25px;
+        padding: 10px 10px 10px 10px;
+    }
+    .formpart{
+        margin: 10px 10px 10px 10px;
+        text-align: center;
+    }
+    formpart1{
+        margin: 10px 10px 10px 50px;
+        text-align: center;
+    }
+    .formpart2{
+        margin: 10px 10px 10px 10px;
+        text-align: center;
+        font-size: 20px;
+    }
+
+    .formpart button {
+        font-size: 20px;
+    }
+
+    .formpart input{
+        font-size: 20px;
+    }
+    .formpart i{
+        justify-content: center;
+    }
+
+
+</style>
+
+<style>
+    /* Parte do criarchat ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    .formcontainer2{
+        display: flex;
+        justify-content: center;
+        border-style: solid;
+        margin-left: 25%;
+        margin-right: 25%;
+        margin-top: 120px;
+    }
+
+    .formchat{
+        display: flex;
+        flex-direction: column;
+        padding: 20px 20px 20px 20px;
+        margin-top: 20px;
+        font-size: 25px;
+
+    }
+</style>
+
+<style>
+    /* Parte do registo -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    .formcontainer3{
+        display: flex;
+        justify-content: center;
+        border-style: solid;
+        margin-left: 35%;
+        margin-right: 35%;
+        margin-top: 120px;
+    }
+    .userbar2 {
+        height: 55px;
+        color: black;
+        border-style: hidden;
+        padding: 2px 2px 2px 2px;
+        font-size: 24px;
+        position: relative;
+        align-items: center;
+    }
+    .userbar2 button{
+        font-size: 20px;
+        border-style: hidden;
+    }
+    .userbar2 button:hover{
+        background-color: #616060;
+        transition: 0.4s;
+
+    }
+
+
+</style>
+
+
+
+<style>
+    /*chat ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    *, *:before, *:after {
+        box-sizing: inherit;
+    }
+
+    html {
+        box-sizing: border-box;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .topbar {
+
+        height: 25px;
+        background: #181818; /* 15317E*/
+        color: #fff;
+        font-size: 10px;
+        padding: 0 8px;
+
+
+    }
+
+    .userbar {
+        height: 55px;
+        background: #343434; /* 2554C7*/
+        color: #fff;
+        padding: 2px 2px 2px 2px;
+        font-size: 24px;
+        position: relative;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .userbar button{
+        background-color: #343434 ;
+        color: white;
+        padding: 3px;
+        margin: 5px;
+        border-style: hidden;
+
+    }
+    .userbar button:hover {
+        background-color: #616060;
+        transition: 0.4s;
+    }
+
+    .userbar .left {
+
+        align-items: center;
+        display: flex;
+        float: left;
+    }
+
+    .userbar .left .profpic {
+        margin: 5px 0 0 5px;
+        width: 40px;
+        height: 40px;
+
+    }
+
+    .userbar .left .profpic img {
+
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+    }
+
+    .userbar .left .name {
+        display: flex;
+        text-align: center;
+        color: white;
+        font-size: 20px;
+        font-weight: 600;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 100px;
+        margin-left: 7px;
+    }
+
+    .userbar .left .groupname{
+        display: flex;
+        align-items: center;
+        margin-left: 50px;
+    }
+
+    .userbar .right{
+        display: flex;
+        align-items: center;
+        float: right;
+    }
+
+    .chat-container{
+        position: absolute;
+        top:88px;
+        right: 8px;
+        left: 8px;
+        bottom: 70px;
+        background: #a3a3a3 url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCGcQ529gyEgYfV7uYj9wTazbkmZ4RYsv0Qw&usqp=CAU");
+        background-repeat: repeat;
+        z-index: 0;
+        overflow-x: scroll;
+
+
+        /*https://i.pinimg.com/originals/19/fc/21/19fc21dc1f8a339ea8f302c75320a28f.jpg */
+    }
+
+    .chat-container .chat{
+        background: #a3a3a3;
+    }
+
+    .chat-container .message-drawer .input-msg {
+        border: 0;
+        flex: 1 1 auto;
+        font-size: 16px;
+        margin: 0;
+        outline: none;
+        min-width: 50px;
+    }
+
+
+
+
+
+    /* Parte para enviar a mensagem */
+
+    .message-drawer {
+        position: fixed;
+        bottom: 15px;
+        justify-content: end;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        overflow: hidden;
+        height: 50px;
+        width: calc(100% - 10px);
+        z-index: 2;
+    }
+
+    .message-drawer div,
+    .message-drawer input {
+        background: #fff;
+        height: 100%;
+
+    }
+
+    .message-drawer .emoji {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: white;
+        border-radius: 5px 0 0 5px;
+        flex: 0 0 auto;
+        margin-left: 8px;
+        width: 48px;
+    }
+
+    .message-drawer .input-msg {
+        border: 0;
+        flex: 1 1 auto;
+        font-size: 16px;
+        margin: 0;
+        outline: none;
+        min-width: 50px;
+    }
+
+    .message-drawer .photo {
+        flex: 0 0 auto;
+        border-radius: 0 0 5px 0;
+        text-align: center;
+        position: relative;
+        width: 48px;
+    }
+
+    .message-drawer .photo:after { /* para fazer o "triangulo"*/
+        border-width: 0px 0 10px 10px;
+        border-color: transparent transparent transparent #fff;
+        border-style: solid;
+        position: absolute;
+        width: 0;
+        height: 0;
+        content: "";
+        top: 0;
+        right: -10px;
+    }
+
+    .message-drawer .photo i {
+        display: block;
+        color: #7d8488;
+        font-size: 24px;
+        transform: translate(-50%, -50%);
+        position: relative;
+        top: 50%;
+        left: 50%;
+    }
+
+    .message-drawer .send {
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        flex: 0 0 auto;
+        margin-left: 8px;
+        margin-right: 8px;
+        padding: 0;
+        position: relative;
+        outline: none;
+    }
+
+    .message-drawer .send .circle {
+        background: #181818; /* 2554C7*/
+        border-radius: 50%;
+        color: #fff;
+        position: relative;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .message-drawer .send .circle i {
+        font-size: 24px;
+        margin-left: 5px;
+    }
+
+
+    /* Messages */
+
+    .message {
+        color: #000;
+        clear: both;
+        line-height: 18px;
+        font-size: 17px;
+        padding: 8px;
+        position: relative;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        max-width: 85%;
+        word-wrap: break-word;
+        z-index: -1;
+    }
+
+    .message:after {
+        position: absolute;
+        content: "";
+        width: 0;
+        height: 0;
+        border-style: solid;
+    }
+
+
+
+    .message:first-child {
+        margin: 16px 0 8px;
+    }
+
+    .message.received {
+        margin-left: 10px;
+        background: white;
+        border-radius: 0px 5px 5px 5px;
+        float: left;
+    }
+
+
+
+
+    .message.received button {
+        margin-left: 7px;
+        background-color: #ffffff;
+        border-style: hidden;
+        padding: 1px 1px 1px 1px;
+    }
+
+    .message.received i{
+        opacity: 0.5;
+        font-size: 18px;
+        background-color: #ffffff;
+        color: #1d86db;
+    }
+    .message.received:hover i{
+        opacity: 1;
+
+    }
+
+    .message.received .flex{
+        display: flex;
+        float: right;
+    }
+    .message.received:after {
+        border-width: 0px 10px 10px 0;
+        border-color: transparent #fff;
+        top: 0;
+        left: -10px;
+    }
+
+    .message.sent {
+        display: block;
+        margin-right: 10px;
+        background: rgb(186, 235, 252); /* 4EE2EC*/
+        border-radius: 5px 0px 5px 5px;
+        float: right;
+
+    }
+    .message.sent .flex{
+        display: flex;
+        float: right;
+    }
+
+    .message.sent:after {
+        border-width: 0px 0 10px 10px;
+        border-color: transparent rgb(186, 235, 252);/* 4EE2EC*/
+        top: 0;
+        right: -10px;
+    }
+    .message.sent button{
+        background-color: rgb(186, 235, 252);
+        border-style: hidden;
+        padding: 1px 1px 1px 1px;
+
+    }
+
+    .message.sent i{
+        opacity: 0;
+        font-size: 18px;
+        background-color: rgb(186, 235, 252);
+        color: #ce4646;
+    }
+
+    .message.sent:hover i{
+        opacity: 1;
+
+    }
+
+    .message .response{
+        color: #808080;
+        line-height: 10px;
+        font-size: 9px;
+    }
+
+    .editpag{
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+
+    }
+
+    .profpic2{
+        margin-top: calc(10% - 10px);
+        border-radius: 50%;
+        overflow: hidden;
+        max-width: 200px;
+        max-height: 200px;
+        object-fit: fill;
+    }
+
+    .overlayimg {
+        margin-top: 10px;
+        opacity: 0;
+        position: absolute;
+        display: flex;
+        font-size: 28px;
+        justify-content: center;
+        align-items: center;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #4a5661;
+        color: white;
+
+    }
+    .overlayimg:hover{
+        opacity: 0.85;
+    }
+
+    .overlayimg input{
+        position: absolute;
+        z-index: 2;
+        height: 3000px;
+        width: 200px;
+        border-radius: 50%;
+        overflow: hidden;
+
+    }
+
+    .profpic2 img{
+        height: 200px;
+        width: 200px;
+    }
+
+
+
+</style>

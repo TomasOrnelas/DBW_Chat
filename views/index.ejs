@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<%- include('./partials/head') %>
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+
+</head>
+<body class="pag">
+<div class="topbar">
+</div>
+<div class="userbar">
+    <div class="left">
+        <div class="profpic" id="imagem"></div>
+        <div class="name"><span id="username"></span></div>
+        <form id="editar" method="get" action="/editar"><button><i class="material-icons">mode</i></button></form>
+        <div class="aut2"> Authenticated! </div>
+    </div>
+    <div class="right">
+        <form method="post" action="/logout"><button value="Log out" type="submit"><i class="material-icons">logout</i></button></form>
+    </div>
+</div>
+
+</div>
+<div class="formcontainer">
+    <div class="form2">
+        <a class="" href="/criarChat" >Criar sala de conversa</a><br>
+        <a href="/aceder" >Que sala aceder</a><br>
+        <a href="/pedidos" >Convites para salas</a><br>
+        <a href="/readmitir" >Voltar a uma sala que abandonou</a><br>
+        <a href="/pedirReadimicao" >Pedir para ser readmitido</a><br>
+    </div>
+</div>
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    const usernameSpan = document.getElementById("username");
+
+    socket.on('connect', () => {
+
+        socket.emit('whoami', (username) => {
+            usernameSpan.innerText = username;
+        });
+        socket.emit('looklike', (imagem) => {
+            var img=document.createElement('img');
+            img.setAttribute('src','/uploads/'+imagem[0].imagem);
+            document.getElementById('imagem').appendChild(img);
+        });
+    });
+</script>
+</body>
+</html>

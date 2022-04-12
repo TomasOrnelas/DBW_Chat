@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Criar chat</title>
+    <%- include('./partials/head') %>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
+          rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined"
+          rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Round"
+          rel="stylesheet">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Sharp"
+          rel="stylesheet">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Two+Tone"
+          rel="stylesheet">
+
+
+</head>
+
+
+<body class="pag">
+<div class="topbar">
+</div>
+<div class="userbar">
+    <div class="left">
+        <form id="index" method="get" action="http://localhost:3000/"><button><i class="material-icons">home</i></button></form>
+        <div class="profpic" id="imagem"></div>
+        <div class="name"><span id="username"></span></div>
+        <form id="editar" method="get" action="/editar"><button><i class="material-icons">mode</i></button></form>
+        <div class="aut">Create your chatroom</div>
+    </div>
+    <div class="right">
+        <form id="aceder" method="get" action="/aceder"><button value="aceder" type="submit" ><i class="material-icons">groups</i></button></form>
+        <form method="post" action="/logout"><button value="Log out" type="submit"><i class="material-icons">logout</i></button></form>
+    </div>
+</div>
+
+<div class="regbar">
+    <div class="reg">
+        <p></p>
+    </div>
+    <div class="reg">
+        <span id="username"></span>
+    </div>
+
+</div>
+<div class="formcontainer2">
+    <form class="formchat" action="/criarChat" method="post">
+        <input type="text" name="username" id="usernameID" hidden>
+        <div class="formpart">
+            <label>Chat Name:</label>
+            <input type="text" name="chatname">
+            <br/>
+        </div>
+        <div class="formpart" id="elementos do chat">
+            <label>Number of diferent usernames that will take part of the chatroom:</label>
+            <input type="number" name="numeroElementos" id="numeroElementos" class="numeroElementos" required>
+        </div>
+        <div class="formpart" id="regras do chat">
+            <label>Number of diferent rules of the chatroom:</label>
+            <input type="number" name="numeroRegras" id="numeroRegras" class="numeroRegras" required>
+        </div>
+        <div class="formpart">
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    const usernameSpan = document.getElementById("username");
+
+    socket.on('connect', () => {
+
+        socket.emit('whoami', (username) => {
+            usernameSpan.innerText = username;
+            document.getElementById("usernameID").setAttribute("value",username);
+
+        });
+        socket.emit('looklike', (imagem) => {
+            var img=document.createElement('img');
+            img.setAttribute('src','/uploads/'+imagem[0].imagem);
+            document.getElementById('imagem').appendChild(img);
+        });
+    });
+</script>
+
+
+<script>
+    document.getElementById("numeroElementos").addEventListener('change', updateValue);
+    document.getElementById("numeroRegras").addEventListener('change', updateValueRegras);
+
+    Element.prototype.remove = function() {
+        this.parentElement.removeChild(this);
+    }
+    NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+        for(var i = this.length - 1; i >= 0; i--) {
+            if(this[i] && this[i].parentElement) {
+                this[i].parentElement.removeChild(this[i]);
+            }
+        }
+    }
+
+    function updateValue (e) {
+        document.getElementsByClassName("elementosChat").remove();
+        for(var i=0;i<e.target.value;i++){
+            var br = document.createElement('br');
+            br.setAttribute("class","elementosChat");
+            document.getElementById("elementos do chat").appendChild(br);
+            var membrosChat = document.createElement("input");
+            membrosChat.setAttribute("type","text");
+            membrosChat.setAttribute("name","elementosChat");
+            membrosChat.setAttribute("class","elementosChat");
+            membrosChat.setAttribute("placeholder","Username");
+            membrosChat.setAttribute("required","True");
+            document.getElementById("elementos do chat").appendChild(membrosChat);
+        }
+    }
+
+    function updateValueRegras (e) {
+        document.getElementsByClassName("regras").remove();
+        for(var i=0;i<e.target.value;i++){
+            var br = document.createElement('br');
+            br.setAttribute("class","regras");
+            document.getElementById("regras do chat").appendChild(br);
+            var regrasChat = document.createElement("input");
+            regrasChat.setAttribute("type","text");
+            regrasChat.setAttribute("name","regras");
+            regrasChat.setAttribute("class","regras");
+            regrasChat.setAttribute("placeholder","Regra");
+            regrasChat.setAttribute("required","True");
+            document.getElementById("regras do chat").appendChild(regrasChat);
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,525 @@
+<!doctype html>
+<html>
+<head>
+    <title>chatroom</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <%- include('./partials/head') %>
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons"
+          rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined"
+          rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Round"
+          rel="stylesheet">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Sharp"
+          rel="stylesheet">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Two+Tone"
+          rel="stylesheet">
+
+
+</head>
+<body class="pag">
+<div class="page">
+    <div class="topbar">
+    </div>
+    <div class="userbar">
+        <div class="left">
+            <form id="index" method="get" action="http://localhost:3000/"><button><i class="material-icons">home</i></button></form>
+
+            <div class="profpic" id="imagem"></div>
+            <div class="name"><span id="username"></span></div>
+            <form id="editar" method="get" action="/editar"><button><i class="material-icons">mode</i></button></form>
+            <div class="groupname"><span id="chats"></span><form method="get" action="/chatname"><button><i class="material-icons">mode</i></button></form></div>
+        </div>
+        <div class="right">
+            <form id="aceder" method="get" action="/aceder"><button value="aceder" type="submit" ><i class="material-icons">groups</i></button></form>
+            <form id="sairChat" method="post" action="/sairChat"><button id="buttonSairChat" name="chat" type="submit" ><i class="material-icons">group_remove</i></button><input id="usernames" name="username" hidden></form>
+            <form id="logout" method="post" action="/logout"><button value="Log out" type="submit"><i class="material-icons">logout</i></button></form>
+
+        </div>
+    </div>
+
+    <div class="chat-container" id="chatbox">
+        <div class="chat" id="messages">
+
+            <script>
+
+                function scrollDown() {
+                    document.getElementById('chatbox').scrollTop =  document.getElementById('chatbox').scrollHeight
+                }
+                function intToRGB(i) {
+                    var c = (i & 0x00FFFFFF)
+                        .toString(16)
+                        .toUpperCase();
+
+                    return "00000".substring(0, 6 - c.length) + c;
+                }
+
+                function hashCode(str) { // java String#hashCode
+                    var hash = 0;
+                    for (var i = 0; i < str.length; i++) {
+                        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+                    }
+                    var result = intToRGB(hash);
+                    console.log(result);
+                    return result;
+                }
+                $(document).ready(function () {
+
+                    var socket = io();
+
+
+                    //We don't need to pass the name, it will be obtained from the session
+                    socket.emit("join");
+                    socket.emit("mensagens guardadas",decodestr());
+
+                    $('#message').submit(function () {
+                        socket.emit('chat message', $('#m').val(),decodestr(),Edit(),Resp());
+                        console.log($('#m').val());
+                        $('#m').val('');
+                        return false;
+                    });
+
+                    socket.on('chat message', function (msg) {
+                        $('#messages').append('<div class="message sent" id="msgSent">' +  ' ' + (msg.id + ": " + msg.msg) +
+                            '<div class="flex"> <form action="/chatroom" method="get"><input name="x" id="inputID" hidden="true"><button id="msgid"><i class="material-icons">delete</i></button></form>' +
+                            '<form action="/chatroom" method="get"><input name="x" id="inputID2" hidden="true"><input name="edit" value="true" hidden="true"><input name="editMessageId" id="temp" hidden="true"><button id="msgid2"><i class="material-icons">mode</i></button></form>' +
+                            '<form action="/chatroom" method="get"><input name="x" id="inputID3" hidden="true"><input name="response" value="true" hidden="true"><input name="responseMessageId" id="temporario" hidden="true"><button id="msgid3"><i class="material-icons">reply</i></button></form>' +
+                            '<button id="pin"><i class="material-icons">mode</i></button></div></div>');
+
+                        document.getElementById("msgSent").setAttribute("id","msgSent"+msg.msgId);
+
+                        document.getElementById("msgid").setAttribute("value",msg.msgId);
+                        document.getElementById("msgid").setAttribute("id",msg.msgId);
+
+                        document.getElementById("msgid2").setAttribute("value",msg.msgId);
+                        document.getElementById("msgid2").setAttribute("id","msgid"+msg.msgId);
+
+                        document.getElementById("inputID").setAttribute("value",decodestr());
+                        document.getElementById("inputID").setAttribute("id",msg.msgId+"i");
+
+                        document.getElementById("temp").setAttribute("value",msg.msgId);
+                        document.getElementById("temp").setAttribute("id","t"+msg.msgId);
+
+                        document.getElementById("inputID2").setAttribute("value",decodestr());
+                        document.getElementById("inputID2").setAttribute("id","B"+msg.msgId+"i");
+
+                        document.getElementById("temporario").setAttribute("value",msg.msgId);
+                        document.getElementById("temporario").setAttribute("id","B"+msg.msgId+"i");
+
+                        document.getElementById("inputID3").setAttribute("value",decodestr());
+                        document.getElementById("inputID3").setAttribute("id","C"+msg.msgId+"i");
+
+                        document.getElementById("msgid3").setAttribute("value",msg.msgId);
+                        document.getElementById("msgid3").setAttribute("id","response msgid"+msg.msgId);
+
+                        document.getElementById("pin").setAttribute("value","msgSent"+msg.msgId);
+                        document.getElementById("pin").setAttribute("id","pin"+msg.msgId);
+                        document.getElementById("pin"+msg.msgId).onclick=function(e){
+                            document.getElementById(this.value).setAttribute("class","message sent flow");
+                        };
+
+                        document.getElementById(msg.msgId).addEventListener("click",deletemsg);
+                        scrollDown()
+                    });
+
+                    socket.on('update',function(msg){
+                        $('#messages').append('<div class="message received">' + (msg) + '</div>');
+                        scrollDown()
+                    });
+
+                    socket.on('send',(result)=>{
+                        document.getElementsByClassName("message sent").remove();
+                        document.getElementsByClassName("message received").remove();
+                        for(let i =0; i<result.length; i++){
+                            if (result[i].username === usernameSpan.innerText) {
+
+                                var y=document.createElement('div');
+                                y.setAttribute('class','message sent');
+                                y.setAttribute('id',"m"+result[i].id);
+                                y.innerText = result[i].username + ": " + result[i].conteudo;
+
+                                var j=document.createElement('div');
+                                j.setAttribute('class',"flex");
+                                j.setAttribute('id',"flex"+result[i].id);
+                                var f=document.createElement('form');
+
+                                f.setAttribute('id',"f"+result[i].id);
+                                f.setAttribute('method',"get");
+                                f.setAttribute('action',"/chatroom");
+
+                                var inputs=document.createElement('input');
+                                inputs.setAttribute("value",decodestr());
+                                inputs.setAttribute("name","x");
+                                inputs.setAttribute("hidden","true");
+
+                                var b=document.createElement('button');
+                                b.setAttribute('value',result[i].id);
+                                b.setAttribute('id',result[i].id);
+
+                                var ix=document.createElement('i');
+                                ix.setAttribute('class',"material-icons");
+                                ix.innerHTML='delete';
+
+                                var f2=document.createElement('form');
+                                f2.setAttribute('id',"fb"+result[i].id);
+                                f2.setAttribute('method',"get");
+                                f2.setAttribute('action',"/chatroom");
+
+                                var input2=document.createElement('input');
+                                input2.setAttribute("value",decodestr());
+                                input2.setAttribute("name","x");
+                                input2.setAttribute("hidden","true");
+
+                                var inputEdit=document.createElement('input');
+                                inputEdit.setAttribute("value","true");
+                                inputEdit.setAttribute("name","edit");
+                                inputEdit.setAttribute("hidden","true");
+
+                                var inputEditMessageId=document.createElement('input');
+                                inputEditMessageId.setAttribute("value",result[i].id);
+                                inputEditMessageId.setAttribute("name","editMessageId");
+                                inputEditMessageId.setAttribute("hidden","true");
+
+                                var b2=document.createElement('button');
+                                b2.setAttribute('value',result[i].id);
+                                b2.setAttribute('id',"bb"+result[i].id);
+
+                                var iy=document.createElement('i');
+                                iy.setAttribute('class',"material-icons");
+                                iy.innerHTML='mode';
+
+                                var form3=document.createElement('form');
+                                form3.setAttribute("action","/chatroom");
+                                form3.setAttribute("method","get");
+                                form3.setAttribute("id","3form"+result[i].id);
+
+                                var x3=document.createElement('input');
+                                x3.setAttribute("name","x");
+                                x3.setAttribute("hidden","true");
+                                x3.setAttribute("value",decodestr());
+                                x3.setAttribute("id","C"+result[i].id+"i");
+
+                                var response3=document.createElement('input');
+                                response3.setAttribute("name","response");
+                                response3.setAttribute("value","true");
+                                response3.setAttribute("hidden","true");
+
+                                var responseMensageId3=document.createElement('input');
+                                responseMensageId3.setAttribute("name","responseMessageId");
+                                responseMensageId3.setAttribute("hidden","true");
+                                responseMensageId3.setAttribute("value",result[i].id);
+                                responseMensageId3.setAttribute("id","B"+result[i].id+"i");
+
+                                var msgid3=document.createElement('button');
+                                msgid3.setAttribute("value",result[i].id);
+                                msgid3.setAttribute("id","response msgid"+result[i].id);
+
+                                var iClass=document.createElement('i');
+                                iClass.setAttribute("class","material-icons");
+                                iClass.innerHTML="reply";
+                                document.getElementById('messages').appendChild(y);
+
+                                /*if(result[i].replys!==undefined){
+                                    for(var replys=0;replys<result[i].replys.length;i++){
+
+                                    }
+                                }*/
+
+                                document.getElementById("m"+result[i].id).appendChild(j)
+                                if(result[i].replys!==undefined){
+                                    var rplArr=result[i].replys;
+                                    for(var replys=0;replys<rplArr.length;replys++){
+                                        var repl=document.createElement("div");
+                                        repl.setAttribute("class","response");
+                                        repl.innerHTML="Reply to "+rplArr[replys][1]+": "+rplArr[replys][0];
+                                        document.getElementById("m"+result[i].id).appendChild(repl);
+                                    }
+                                }
+                                document.getElementById("flex"+result[i].id).appendChild(f);
+                                document.getElementById("f"+result[i].id).appendChild(b);
+                                document.getElementById("f"+result[i].id).appendChild(inputs);
+                                document.getElementById(result[i].id).appendChild(ix);
+                                document.getElementById(result[i].id).addEventListener("click",deletemsg);
+
+                                document.getElementById("flex"+result[i].id).appendChild(f2);
+                                document.getElementById("fb"+result[i].id).appendChild(b2);
+                                document.getElementById("fb"+result[i].id).appendChild(input2);
+                                document.getElementById("fb"+result[i].id).appendChild(inputEdit);
+                                document.getElementById("fb"+result[i].id).appendChild(inputEditMessageId);
+                                document.getElementById("bb"+result[i].id).appendChild(iy);
+                                document.getElementById(result[i].id).addEventListener("click",editmsg);
+                                document.getElementById("flex"+result[i].id).appendChild(form3);
+                                document.getElementById("3form"+result[i].id).appendChild(x3);
+                                document.getElementById("3form"+result[i].id).appendChild(response3);
+                                document.getElementById("3form"+result[i].id).appendChild(responseMensageId3);
+                                document.getElementById("3form"+result[i].id).appendChild(msgid3);
+                                document.getElementById("response msgid"+result[i].id).appendChild(iClass);
+
+
+                            }else{
+                                var y=document.createElement('div');
+                                y.setAttribute('class','message received');
+                                y.setAttribute('id',"m"+result[i].id);
+                                y.innerText = result[i].username + ": " + result[i].conteudo;
+                                document.getElementById('messages').appendChild(y);
+                                if(result[i].replys!==undefined){
+                                    var rplArr=result[i].replys;
+                                    for(var replys=0;replys<rplArr.length;replys++){
+                                        var repl=document.createElement("div");
+                                        repl.setAttribute("class","response");
+                                        repl.innerHTML="Reply to "+rplArr[replys][1]+": "+rplArr[replys][0];
+                                        document.getElementById("m"+result[i].id).appendChild(repl);
+                                    }
+                                }
+                                var a=document.createElement('div');
+                                a.setAttribute('class','flex');
+                                a.setAttribute('id',"flex"+result[i].id);
+                                document.getElementById("m"+result[i].id).appendChild(a);
+
+                                var f=document.createElement('form');
+                                f.setAttribute('id',"f"+result[i].id);
+                                f.setAttribute('method',"get");
+                                f.setAttribute('action',"/chatroom");
+                                document.getElementById("flex"+result[i].id).appendChild(f);
+
+                                var b=document.createElement('button');
+                                b.setAttribute('value',result[i].id);
+                                b.setAttribute('id',result[i].id);
+                                document.getElementById("f"+result[i].id).appendChild(b);
+
+                                var inputs=document.createElement('input');
+                                inputs.setAttribute("value",decodestr());
+                                inputs.setAttribute("name","x");
+                                inputs.setAttribute("hidden","true");
+                                document.getElementById("f"+result[i].id).appendChild(inputs);
+
+                                var ix=document.createElement('i');
+                                ix.setAttribute('id',"ix"+result[i].id)
+                                ix.setAttribute('class',"material-icons");
+                                ix.innerHTML='thumb_up_off_alt';
+                                document.getElementById(result[i].id).appendChild(ix);
+
+                                var spn=document.createElement('span');
+                                spn.setAttribute('id',"spn"+result[i].id);
+                                document.getElementById("flex"+result[i].id).appendChild(spn);
+                                document.getElementById(result[i].id).addEventListener("click",liked);
+                                var form3=document.createElement('form');
+                                form3.setAttribute("action","/chatroom");
+                                form3.setAttribute("method","get");
+                                form3.setAttribute("id","3form"+result[i].id);
+
+                                var x3=document.createElement('input');
+                                x3.setAttribute("name","x");
+                                x3.setAttribute("hidden","true");
+                                x3.setAttribute("value",decodestr());
+                                x3.setAttribute("id","C"+result[i].id+"i");
+                                var response3=document.createElement('input');
+                                response3.setAttribute("name","response");
+                                response3.setAttribute("value","true");
+                                response3.setAttribute("hidden","true");
+
+                                var responseMensageId3=document.createElement('input');
+                                responseMensageId3.setAttribute("name","responseMessageId");
+                                responseMensageId3.setAttribute("hidden","true");
+                                responseMensageId3.setAttribute("value",result[i].id);
+                                responseMensageId3.setAttribute("id","B"+result[i].id+"i");
+
+                                var msgid3=document.createElement('button');
+                                msgid3.setAttribute("value",result[i].id);
+                                msgid3.setAttribute("id","response msgid"+result[i].id);
+
+                                var iClass=document.createElement('i');
+                                iClass.setAttribute("class","material-icons");
+                                iClass.innerHTML="reply";
+
+                                document.getElementById("flex"+result[i].id).appendChild(form3);
+                                document.getElementById("3form"+result[i].id).appendChild(x3);
+                                document.getElementById("3form"+result[i].id).appendChild(response3);
+                                document.getElementById("3form"+result[i].id).appendChild(responseMensageId3);
+                                document.getElementById("3form"+result[i].id).appendChild(msgid3);
+                                document.getElementById("response msgid"+result[i].id).appendChild(iClass);
+
+                            }
+                            didilikeit(result[i]);
+                        }
+                        edit();
+                        responseMsg();
+                        scrollDown();
+
+                    });
+
+                    socket.on('editar messages', function(msg){
+                        document.getElementById("sendB").setAttribute("value",msg.msg);
+                    });
+
+
+                });
+
+            </script>
+
+        </div>
+        <form id="message" class="message-drawer">
+            <div class="emoji">
+                <i class="material-icons">mood</i>
+            </div>
+            <input type="text" class="input-msg" name="textInput" placeholder="Send a message"  autocomplete="off" id="m" >
+
+            <div class="photo">
+                <i class="material-icons">image</i>
+            </div>
+
+            <button class="send" id="sendB">
+                <div class="circle">
+                    <i class="material-icons">send</i>
+                </div>
+            </button>
+        </form>
+    </div>
+
+</div>
+</body>
+<script>
+    const socket = io();
+    const usernameSpan = document.getElementById("username");
+    const chatsSpan =document.getElementById("chats").innerText=decodestr();
+    document.getElementById("buttonSairChat").setAttribute("value",decodestr());
+
+    function decodestr() {
+        var uri = window.location.href;
+        var url = new URL(uri);
+        var x = url.searchParams.get("x");
+        return x;
+    }
+
+    Element.prototype.remove = function() {
+        this.parentElement.removeChild(this);
+    }
+    NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+        for(var i = this.length - 1; i >= 0; i--) {
+            if(this[i] && this[i].parentElement) {
+                this[i].parentElement.removeChild(this[i]);
+            }
+        }
+    }
+
+
+
+    socket.on('connect', () => {
+
+        socket.emit('whoami', (username) => {
+            usernameSpan.innerText = username;
+            document.getElementById("usernames").setAttribute("value",username);
+        });
+
+
+        socket.emit('looklike', (imagem) => {
+            var img=document.createElement('img');
+            img.setAttribute('src','/uploads/'+imagem[0].imagem);
+            document.getElementById('imagem').appendChild(img);
+        });
+    });
+
+    socket.on('mensagem para editar',(msg)=>{
+        document.getElementById("m").setAttribute("value",msg.conteudo);
+        var button=document.getElementById("sendB");
+        var oldText=msg.conteudo
+        button.onclick=function(e){
+            var newText=document.getElementById("m").value;
+            socket.emit('editar messages', msg.id,newText,oldText);
+        }
+
+    })
+
+    socket.on('editar messages', ()=>{
+
+        var queryParams = new URLSearchParams(window.location.search);
+        queryParams.set("edit", "false");
+        history.replaceState(null, null, "?"+queryParams.toString());
+        location.reload();
+    });
+
+    socket.on('reply messages', ()=>{
+
+        var queryParams = new URLSearchParams(window.location.search);
+        queryParams.set("response", "false");
+        history.replaceState(null, null, "?"+queryParams.toString());
+        location.reload();
+    });
+
+    socket.on('didilike',(s,mensagens)=>{
+        var nlikes=mensagens.like;
+        document.getElementById("spn"+mensagens.id).textContent=nlikes;
+        if (s=="true"){
+           document.getElementById("ix"+mensagens.id).innerHTML="thumb_up";
+        }else{
+            document.getElementById("ix"+mensagens.id).innerHTML="thumb_up_off_alt";
+        }
+    })
+
+    function editmsg(e){
+        socket.emit('editar messages', this.id);
+    }
+    function deletemsg(e){
+        socket.emit('deleted messages', this.id);
+    }
+    function liked(e){
+        socket.emit('liked', this.id);
+    }
+
+
+    function edit(){
+        var uri = window.location.href;
+        var url = new URL(uri);
+        var edit = url.searchParams.get("edit");
+        if(edit=="true"){
+            document.getElementById("message").setAttribute("id","editMsg");
+            socket.emit('mensagem para editar',url.searchParams.get("editMessageId"));
+        }
+    }
+
+    function Edit(){
+        var uri = window.location.href;
+        var url = new URL(uri);
+        return url.searchParams.get("edit");
+    }
+
+    function Resp(){
+        var uri = window.location.href;
+        var url = new URL(uri);
+        return url.searchParams.get("response");
+    }
+
+    function responseMsg(){
+        var uri = window.location.href;
+        var url = new URL(uri);
+        var response = url.searchParams.get("response");
+        if(response=="true"){
+            document.getElementById("message").setAttribute("id","replyMsg");
+            var button=document.getElementById("sendB");
+            button.onclick=function(e){
+                var reply=document.getElementById("m").value;
+                var msgid = url.searchParams.get("responseMessageId");
+                var username=usernameSpan.innerText;
+                socket.emit('reply messages', msgid,reply,username);
+            }
+        }
+    }
+
+    function didilikeit(mensagem){
+        var username=usernameSpan.innerText;
+        var msg=mensagem.id;
+        socket.emit('didilike',username,msg)
+
+    }
+
+</script>
+</html>
